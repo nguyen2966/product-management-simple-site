@@ -1,5 +1,5 @@
 const express = require('express')
-
+require('dotenv').config() //Line nay de add cau hình từ .env
 const route = require("./routes/client/index.route")
 
 const app = express()
