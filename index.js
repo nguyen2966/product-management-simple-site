@@ -2,6 +2,7 @@ const express = require('express')
 require('dotenv').config() //Line nay de add cau hình từ .env
 const route = require("./routes/client/index.route")
 const admin_route = require("./routes/admin/index.route")
+const systemConfig = require("./config/system")
 
 const database = require("./config/database")
 database.connect()
@@ -13,6 +14,10 @@ app.set("views","./views")
 app.set("view engine","pug")
 
 app.use(express.static("public"))//nhúng file tĩnh
+
+//App locals variables
+app.locals.prefixAdmin = systemConfig.prefixAdmin
+//this to use in all pug files
 
 
 admin_route(app)
