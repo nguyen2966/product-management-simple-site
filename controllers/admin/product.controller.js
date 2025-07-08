@@ -26,9 +26,15 @@ module.exports.index= async (req,res)=>{
     if(req.query.status){
       const index = filterStatus.findIndex(item => item.status == req.query.status)
       filterStatus[index].class="active"
-    } else {
-      const index = filterStatus.findIndex(item => item.status == "")
-      filterStatus[index].class="active"
+    } 
+
+    let keyword=""
+    if(req.query.keyword) {
+        keyword = req.query.keyword
+
+        const regex = new RegExp(keyword,"i")
+        //Regular expression for searching similar strings with input
+        find.title = regex
     }
 
     
@@ -37,6 +43,7 @@ module.exports.index= async (req,res)=>{
    res.render("admin/pages/products/index",{
     pageTitle: "Trang san pham",
     products: products,
-    filterStatus: filterStatus
+    filterStatus: filterStatus,
+    keyword: keyword
    })
 }

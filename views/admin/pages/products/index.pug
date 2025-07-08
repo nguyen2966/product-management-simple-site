@@ -21,6 +21,7 @@ block main
                 placeholder="Nhập từ khóa"
                 name="keyword"
                 class="form-control"
+                value= keyword
             )
           .input-group-append
             button(
@@ -48,7 +49,7 @@ block main
                 height="80"
             )
           td #{item.title}
-          td #{item.price}
+          td #{item.price}$
           td
             if(item.status == "active") 
               a(href="#" class="badge bg-success text-white") đang kinh doanh
