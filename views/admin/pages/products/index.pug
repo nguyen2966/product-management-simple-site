@@ -44,3 +44,18 @@ block main
           td 
             button(class="btn btn-warning btn-sm") Sửa
             button(class="btn btn-danger btn-sm ml-1") Xóa
+  
+  nav
+  ul.pagination
+    if(pagination.currentPage > 1)
+      li.page-item
+        button(class="page-link"
+          button-pagination = pagination.curentPage-1) Trang trước
+    - for (var i = 1; i <= pagination.toltalPage; i++)
+      li.page-item(class=(i === pagination.currentPage ? 'active' : ''))
+        button(class="page-link"
+               button-pagination = i) #{i}
+    if(pagination.currentPage < pagination.toltalPage)
+      li.page-item
+        button(class="page-link"
+         button-pagination = pagination.curentPage+1) Trang trước
