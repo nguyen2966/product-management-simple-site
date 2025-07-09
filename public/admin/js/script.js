@@ -79,7 +79,6 @@ if(checkboxMulti){
 //End CheckBox Multi
 
 //Form Change Multi
-
 const formChangeMulti = document.querySelector("[form-change-multi]")
 if(formChangeMulti){
     formChangeMulti.addEventListener("submit",(e)=>{
@@ -87,13 +86,30 @@ if(formChangeMulti){
         
         const checkboxMulti = document.querySelector("[checkbox-multi]")
         const inputsChecked = checkboxMulti.querySelectorAll("input[name='id']:checked")
+        
+        const typeChange =e.target.elements.type.value
+
+        if(typeChange=="delete-all"){
+            const isConfirm = confirm("Bạn có chắc muốn xóa các sản phẩm này không?")
+            if(!isConfirm){
+                return //cancel
+            }
+        }
 
         if(inputsChecked.length > 0){
            let ids = []
            const inputIds = formChangeMulti.querySelector("input[name='ids']")
            inputsChecked.forEach(input=>{
-            const id = input.value
-            ids.push(id)
+             const id = input.value
+
+             if(typeChange == "change-position"){
+                const position = input.closest("tr").querySelector("input[name='position']").value
+                const res = `${id}-${position}`
+                ids.push(res)
+             }else{
+                ids.push(id)
+             }
+
            })
         inputIds.value = ids.join(",")
         formChangeMulti.submit()

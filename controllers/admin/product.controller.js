@@ -32,7 +32,10 @@ module.exports.index= async (req,res)=>{
     //End Pagination
 
     
-    const products = await Product.find(find).limit(objectPagination.limitItems).skip(objectPagination.skip)
+    const products = await Product.find(find)
+    .sort({position:"desc"}) //sắp xếp theo position giảm dần
+    .limit(objectPagination.limitItems) //số lượng item lấy ra mỗi trang
+    .skip(objectPagination.skip)  //vị trí bắt đầu lấy
 
    res.render("admin/pages/products/index",{
     pageTitle: "Trang san pham",
@@ -51,7 +54,12 @@ module.exports.changeStatus = async (req,res)=>{
    
    await Product.updateOne({_id: id},{status: status})
    //find product with correspond id and change status
-   res.redirect("/admin/products")
+   const referer = req.get('referer');
+   if (referer && referer.startsWith('http://localhost:3000/admin/products')) {
+     res.redirect(referer);
+   } else {
+     res.redirect('/admin/products');
+   }
 }
 
 //PATCH admin/products/change-Multi
@@ -65,12 +73,36 @@ module.exports.changeMulti = async (req,res)=>{
     case "inactive":
         await Product.updateMany({_id:{$in:ids}},{status:"inactive"})
         break
+    case "delete-all":
+        await Product.updateMany({_id:{$in:ids}},{deleted:true})
+    case "change-position":
+        ids.forEach(async id=>{
+            const res = id.split("-")
+            await Product.updateOne({_id:res[0]},{position:parseInt(res[1])})
+        })
   }
-  res.redirect("/admin/products")
+
+  const referer = req.get('referer');
+  if (referer && referer.startsWith('http://localhost:3000/admin/products')) {
+    res.redirect(referer);
+  } else {
+    res.redirect('/admin/products');
+  }
 }
 //DELETE admin/products/delete/:id
 module.exports.deleteItem = async (req,res)=>{
   const id = req.params.id
-  await Product.deleteOne({_id:id})
-  res.redirect("/admin/products")
+  //await Product.deleteOne({_id:id})
+  await Product.updateOne({_id:id},{
+    deleted: true,
+    deletedAt: new Date()
+  }) //soft delete
+
+
+  const referer = req.get('referer');
+  if (referer && referer.startsWith('http://localhost:3000/admin/products')) {
+    res.redirect(referer);
+  } else {
+    res.redirect('/admin/products');
+  }
 }
