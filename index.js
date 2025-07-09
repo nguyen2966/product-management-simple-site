@@ -1,5 +1,6 @@
 const express = require('express')
 const methodOverride = require('method-override')
+const bodyParser = require('body-parser')
 require('dotenv').config() //Line nay de add cau hình từ .env
 const route = require("./routes/client/index.route")
 const admin_route = require("./routes/admin/index.route")
@@ -13,7 +14,8 @@ const port = process.env.PORT
 
 app.use(methodOverride("_method"))
 
-
+//parse application
+app.use(bodyParser.urlencoded({extended:false}))
 
 app.set("views","./views")
 app.set("view engine","pug")
