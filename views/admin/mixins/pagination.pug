@@ -1,0 +1,39 @@
+mixin pagination(pagination)
+  -
+    const current = pagination.currentPage 
+    const total = pagination.toltalPage 
+    const range = 1
+    const pages = []
+
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) pages.push(i)
+    } else {
+      pages.push(1)
+      if (current > 2 + range) pages.push('...')
+      for (let i = current - range; i <= current + range; i++) {
+        if (i > 1 && i < total) pages.push(i)
+      }
+      if (current < total - 1 - range) pages.push('...')
+      pages.push(total)
+    }
+
+  nav
+    ul.pagination
+      // Nút Trang trước
+      if (current > 1)
+        li.page-item
+          button(class="page-link", button-pagination=current - 1) Trang trước
+
+      // Các trang và dấu "..."
+      - for (let i = 0; i < pages.length; i++)
+        if (pages[i] === '...')
+          li(class="page-item disabled")
+            span(class="page-link") ...
+        else
+          li(class=`page-item ${pages[i] === current ? 'active' : ''}`)
+            button(class="page-link", button-pagination=pages[i])= pages[i]
+
+      // Nút Trang sau
+      if (current < total)
+        li.page-item
+          button(class="page-link", button-pagination=current + 1) Trang sau
