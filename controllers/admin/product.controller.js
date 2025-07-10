@@ -124,6 +124,7 @@ module.exports.create = (req,res)=>{
 
 //POST admin/products/createPost
 module.exports.createPost = async (req,res)=>{
+    console.log(req.file)
     for(key in req.body){
        if(!isNaN(req.body[key]) && req.body[key]){
         req.body[key]= parseInt(req.body[key])
@@ -134,7 +135,8 @@ module.exports.createPost = async (req,res)=>{
       const countProducts = await Product.countDocuments()
       req.body.position = countProducts + 1
     }
-
+    
+    req.body.thumbnail = `/uploads/${req.file.filename}`
 
 
     const product = new Product(req.body) // save whole object to database
