@@ -1,5 +1,7 @@
 //GET /admin/products
 
+const systemConfig = require("../../config/system")
+
 const Product = require("../../models/products.model")
 const filterStatusHelper = require("../../helpers/filterStatus")
 const searchHelper = require("../../helpers/search")
@@ -54,6 +56,9 @@ module.exports.changeStatus = async (req,res)=>{
    
    await Product.updateOne({_id: id},{status: status})
    //find product with correspond id and change status
+
+   req.flash("success","Cập nhật thành công trạng thái")
+   //
    const referer = req.get('referer');
    if (referer && referer.startsWith('http://localhost:3000/admin/products')) {
      res.redirect(referer);
@@ -80,7 +85,9 @@ module.exports.changeMulti = async (req,res)=>{
             const res = id.split("-")
             await Product.updateOne({_id:res[0]},{position:parseInt(res[1])})
         })
+    
   }
+  req.flash("success",`Cập nhật thành công ${ids.length} sản phẩm`)
 
   const referer = req.get('referer');
   if (referer && referer.startsWith('http://localhost:3000/admin/products')) {
@@ -98,6 +105,7 @@ module.exports.deleteItem = async (req,res)=>{
     deletedAt: new Date()
   }) //soft delete
 
+  req.flash("success","Xóa thành công sản phẩm")
 
   const referer = req.get('referer');
   if (referer && referer.startsWith('http://localhost:3000/admin/products')) {
@@ -105,4 +113,31 @@ module.exports.deleteItem = async (req,res)=>{
   } else {
     res.redirect('/admin/products');
   }
+}
+
+//POST admin/products/create
+module.exports.create = (req,res)=>{
+    res.render("admin/pages/products/create",{
+      pageTitle:"Thêm mới sản phẩm"
+    })
+}
+
+//POST admin/products/createPost
+module.exports.createPost = async (req,res)=>{
+    for(key in req.body){
+       if(!isNaN(req.body[key]) && req.body[key]){
+        req.body[key]= parseInt(req.body[key])
+       }
+    }
+    
+    if(req.body.position == ""){
+      const countProducts = await Product.countDocuments()
+      req.body.position = countProducts + 1
+    }
+
+
+
+    const product = new Product(req.body) // save whole object to database
+    await product.save() 
+    res.redirect(`${systemConfig.prefixAdmin}/products`)
 }
