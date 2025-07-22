@@ -40,6 +40,7 @@ app.locals.prefixAdmin = systemConfig.prefixAdmin
 admin_route(app)
 route(app)
 
+
 app.listen(port,()=>{
     console.log("Example app listening on port "+ port)
 })

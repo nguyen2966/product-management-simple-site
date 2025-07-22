@@ -124,7 +124,6 @@ module.exports.create = (req,res)=>{
 
 //POST admin/products/createPost
 module.exports.createPost = async (req,res)=>{
-    console.log(req.file)
     for(key in req.body){
        if(!isNaN(req.body[key]) && req.body[key]){
         req.body[key]= parseInt(req.body[key])
@@ -136,10 +135,55 @@ module.exports.createPost = async (req,res)=>{
       req.body.position = countProducts + 1
     }
     
-    req.body.thumbnail = `/uploads/${req.file.filename}`
+    if(req.file){
+      req.body.thumbnail = `/uploads/${req.file.filename}`
+    }
+    
 
 
     const product = new Product(req.body) // save whole object to database
     await product.save() 
+    res.redirect(`${systemConfig.prefixAdmin}/products`)
+}
+
+//[GET] /admin/products/edit/:id
+module.exports.edit = async (req,res)=>{
+  try{
+      const find = {
+       deleted: false,
+       _id: req.params.id
+      }
+      const product = await Product.findOne(find)
+      res.render("admin/pages/products/edit_product",{
+          pageTitle: "Chỉnh sửa sản phẩm",
+          product:product
+        }
+      )
+  } catch (error){
+    req.flash("error","Không có sản phẩm")
+    res.redirect(`${systemConfig.prefixAdmin}/products`)
+  }
+
+}
+
+//[PATCH] /admin/products/edit/:id
+module.exports.editPatch = async (req,res)=>{
+    for(key in req.body){
+       if(!isNaN(req.body[key]) && req.body[key]){
+        req.body[key]= parseInt(req.body[key])
+       }
+    }
+    
+    if(req.file){
+      req.body.thumbnail = `/uploads/${req.file.filename}`
+    }
+    
+    try{
+       await Product.updateOne({_id: req.params.id },req.body)
+       req.flash("success","Cập nhật thành công")
+    } catch(error){
+        req.flash("error","Cập nhật sản phẩm thất bại")
+        res.redirect(`${systemConfig.prefixAdmin}/products`)
+    }
     res.redirect(`${systemConfig.prefixAdmin}/products`)
 }
