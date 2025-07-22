@@ -15,7 +15,8 @@ const productSchema = new mongoose.Schema(
         position: Number,
         slug: {
             type: String,
-            slug: "title"  //san-pham-1
+            slug: "title" ,
+            unique: true //san-pham-1
         },
         deleted: {
             type: Boolean,
