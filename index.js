@@ -27,11 +27,13 @@ app.use(session({cookie:{maxAge: 60000}}))
 app.use(flash())
 //End Flash
 
-app.set("views","./views")
+app.set("views",`${__dirname}/views`)
 app.set("view engine","pug")
 
-app.use(express.static("public"))//nhúng file tĩnh
 
+
+app.use(express.static(`${__dirname}/public`))//nhúng file tĩnh
+//deploy online cần truyền từ thu mục gốc
 //App locals variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin
 //this to use in all pug files
