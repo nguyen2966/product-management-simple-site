@@ -135,12 +135,11 @@ module.exports.createPost = async (req,res)=>{
       req.body.position = countProducts + 1
     }
     
-    if(req.file){
-      req.body.thumbnail = `/uploads/${req.file.filename}`
-    }
+    // if(req.file){
+    //   req.body.thumbnail = `/uploads/${req.file.filename}`
+    // }
+    // Now using online url created at route
     
-
-
     const product = new Product(req.body) // save whole object to database
     await product.save() 
     res.redirect(`${systemConfig.prefixAdmin}/products`)
@@ -174,9 +173,9 @@ module.exports.editPatch = async (req,res)=>{
        }
     }
     
-    if(req.file){
-      req.body.thumbnail = `/uploads/${req.file.filename}`
-    }
+    // if(req.file){
+    //   req.body.thumbnail = `/uploads/${req.file.filename}`
+    // } 
     
     try{
        await Product.updateOne({_id: req.params.id },req.body)
@@ -206,5 +205,4 @@ module.exports.detail = async (req,res)=>{
     req.flash("error","Không có sản phẩm")
     res.redirect(`${systemConfig.prefixAdmin}/products`)
   }
-
 }
