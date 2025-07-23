@@ -30,12 +30,19 @@ module.exports.index= async (req,res)=>{
         limitItems : 5
     },req.query,
     countProducts)
-    
     //End Pagination
-
+    
+    //sort
+    let sort = {}
+    if(req.query.sortKey && req.query.sortValue){
+      sort[req.query.sortKey] = req.query.sortValue
+    } else {
+      sort.position = "desc"
+    }
+    //end sort
     
     const products = await Product.find(find)
-    .sort({position:"desc"}) //sắp xếp theo position giảm dần
+    .sort(sort) //sắp xếp 
     .limit(objectPagination.limitItems) //số lượng item lấy ra mỗi trang
     .skip(objectPagination.skip)  //vị trí bắt đầu lấy
 
