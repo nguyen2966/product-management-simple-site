@@ -20,11 +20,13 @@ block main
     
     if (product.status)
       div.mb-4
-        span Trạng thái:
-        if (product.status === 'active')
-          span(class="badge badge-success") Đang kinh doanh
-        else 
-          span(class="badge badge-danger") Đang kinh doanh
+      span Trạng thái:
+        if product.status === 'active'
+          span.badge.bg-success.ms-2 Đang kinh doanh
+        else
+          span.badge.bg-danger.ms-2 Ngừng kinh doanh
+    if(product.description)
+      div.mb-4 Mô tả: !{product.description}
     a(
      href=`${prefixAdmin}/products/edit/${product.id}`
      class="btn btn-warning" ) Chỉnh sửa
