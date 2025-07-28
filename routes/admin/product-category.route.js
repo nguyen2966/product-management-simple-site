@@ -24,7 +24,13 @@ router.patch("/change-multi", controller.changeMulti)
 
 router.delete("/delete/:id", controller.deleteItem)
 
-
+//
+router.get("/edit/:id",controller.edit)
+router.patch("/edit/:id",
+    upload.single('thumbnail'),
+    uploadCloud.upload,
+    validate.createPost
+    ,controller.editPatch)
 
 module.exports = router
 

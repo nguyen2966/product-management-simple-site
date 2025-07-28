@@ -23,6 +23,16 @@ block main
         value=product.title
       )
     div(class="form-group")
+      label(for="parent_id") Danh mục
+      select(
+        class="form-control"
+        id="prodcuct_cactegory_id"
+        name="product_category_id"
+      )
+        option(value="") --Chọn danh mục--
+        if(Categories)
+          +select-tree(Categories)
+    div(class="form-group")
       label(for="desc") Mô tả
       textarea(
         class="form-control"
@@ -31,7 +41,7 @@ block main
         rows="5"
       ) #{product.description}
     div(class="form-group")
-      label(for="price") Gía
+      label(for="price") Giá
       input(
         type="number"
         class="form-control"

@@ -142,3 +142,41 @@ module.exports.deleteItem = async (req,res)=>{
     res.redirect('/admin/products');
   }
 }
+
+//[GET] /admin/products-category/edit/:id
+module.exports.edit = async (req,res)=>{
+  try{
+      const find = {
+       deleted: false,
+       _id: req.params.id
+      }
+      const record = await ProductCategory.findOne(find)
+      res.render("admin/pages/products-category/edit",{
+          pageTitle: "Chỉnh sửa danh mục sản phẩm",
+          category:record
+        }
+      )
+  } catch (error){
+    req.flash("error","Không có sản phẩm")
+    res.redirect(`${systemConfig.prefixAdmin}/products`)
+  }
+}
+
+//[PATCH] /admin/products-category/edit/:id
+module.exports.editPatch = async (req,res)=>{
+    for(key in req.body){
+       if(!isNaN(req.body[key]) && req.body[key]){
+        req.body[key]= parseInt(req.body[key])
+       }
+    }
+    try{
+       await ProductCategory.updateOne({_id: req.params.id },req.body)
+       req.flash("success","Cập nhật thành công")
+    } catch(error){
+        req.flash("error","Cập nhật thất bại")
+        res.redirect(`${systemConfig.prefixAdmin}/products-category`)
+    }
+    res.redirect(`${systemConfig.prefixAdmin}/products`)
+}
+
+

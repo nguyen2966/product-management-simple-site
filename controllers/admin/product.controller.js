@@ -3,9 +3,12 @@
 const systemConfig = require("../../config/system")
 
 const Product = require("../../models/products.model")
+const ProductCategory = require("../../models/products-category.model")
 const filterStatusHelper = require("../../helpers/filterStatus")
 const searchHelper = require("../../helpers/search")
 const paginationHelper = require("../../helpers/pagination")
+const createTree = require("../../helpers/createTree")
+
 
 module.exports.index= async (req,res)=>{
     //Filter
@@ -123,9 +126,15 @@ module.exports.deleteItem = async (req,res)=>{
 }
 
 //POST admin/products/create
-module.exports.create = (req,res)=>{
+module.exports.create = async (req,res)=>{
+    let find= {
+      deleted:false
+    }
+    const record = await ProductCategory.find(find)
+    const newRecord = createTree(record,"")
     res.render("admin/pages/products/create",{
-      pageTitle:"Thêm mới sản phẩm"
+      pageTitle:"Thêm mới sản phẩm",
+      Categories:newRecord
     })
 }
 
@@ -179,10 +188,6 @@ module.exports.editPatch = async (req,res)=>{
         req.body[key]= parseInt(req.body[key])
        }
     }
-    
-    // if(req.file){
-    //   req.body.thumbnail = `/uploads/${req.file.filename}`
-    // } 
     
     try{
        await Product.updateOne({_id: req.params.id },req.body)
