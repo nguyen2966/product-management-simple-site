@@ -1,0 +1,42 @@
+extends ../../layouts/default.pug 
+
+block main 
+  h1(class="mb-3") Nhóm quyền
+
+  .card.mb-3 
+    .card-header Danh sách 
+    .card-body 
+      .row
+        .col-4
+          a(
+            href=`${prefixAdmin}/roles/create`
+            class="btn btn-outline-success"
+          ) +Thêm quyền
+  table(class="table table-bordered")
+    thead
+      tr
+        th STT
+        th Nhóm quyền
+        th Mô tả ngắn
+        th Hành động
+    tbody
+      each record,index in records
+        tr
+          td #{index+1}
+          td #{record.title}
+          td #{record.description}
+          td
+            a(
+              href=`${prefixAdmin}/products/detail/${record.id}`
+              class="btn btn-warning btn-sm"
+            ) Chi tiết
+            a(
+              href=`${prefixAdmin}/products/edit/${record.id}`
+              class="btn btn-secondary btn-sm"
+            ) Sửa
+            button(
+              class="btn btn-danger btn-sm ml-1"
+              button-delete
+              data-id=record.id
+            ) Xóa
+  script(src="/admin/js/product.js")
