@@ -2,7 +2,7 @@ const express = require("express")
 const multer = require("multer")
 
 const router = express.Router()
-const storage = require("../../helpers/storageMulter")
+//const storage = require("../../helpers/storageMulter")
 //const upload = multer({storage: storage()})
 // upload lên cloud, không cần lưu về local
 
