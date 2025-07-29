@@ -1,5 +1,6 @@
 //GET /admin/roles
 const Role = require("../../models/role.model")
+const systemConfig = require("../../config/system")
 
 module.exports.index = async (req,res)=>{
    let find= {
@@ -24,9 +25,34 @@ module.exports.create = async (req,res)=>{
 }
 
 module.exports.createPost = async (req,res)=>{
-   console.log(req.body)
    const record = new Role(req.body)
    await record.save()
+  
+   res.redirect(`${systemConfig.prefixAdmin}/roles`)
+}
 
-   res.redirect("admin/roles")
+module.exports.edit = async (req,res)=>{
+   let find = {
+      _id: req.params.id,
+      deleted:false
+   }
+   const record = await Role.findOne(find)
+   if(record)console.log(record)
+   
+  
+   res.render("admin/pages/roles/edit",{
+      pageTitle:"Sửa quyền",
+      record:record
+   })
+}
+
+module.exports.editPatch = async (req,res)=>{
+   try{
+       await Role.updateOne({_id: req.params.id },req.body)
+       req.flash("success","Cập nhật thành công")
+       res.redirect(`${systemConfig.prefixAdmin}/roles`)
+   } catch(error){
+        req.flash("error","Cập nhật thất bại")
+        res.redirect(`${systemConfig.prefixAdmin}/roles`)
+   }
 }
