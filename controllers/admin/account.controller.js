@@ -51,3 +51,45 @@ module.exports.createPost = async (req, res) => {
 
    res.redirect(`${systemConfig.prefixAdmin}/accounts`)
 }
+
+module.exports.edit = async (req, res) => {
+   let find = {
+      _id: req.params.id,
+      deleted: false
+   }
+   const record = await Account.findOne(find)
+   const roles = await Role.find({deleted:false})
+   res.render("admin/pages/accounts/edit", {
+      pageTitle: "Cập nhật tài khoản",
+      record: record,
+      roles:roles
+   })
+}
+
+
+module.exports.editPatch = async (req, res) => {
+   try {
+      const emailExsit = await Account.findOne({
+        _id: {$ne: id}, //Update case, let it update if there no other account with same email
+        // this case has different logic with create case
+        email: req.body.email,
+        deleted:false
+      })
+      if(emailExist){
+        req.flash("error","Email đã tồn tại")
+        res.redirect(`${systemConfig.prefixAdmin}/accounts`)
+      }
+      if(req.body.password){
+        req.body.password = md5(req.body.password)
+      }else{
+        delete req.body.password
+      }
+      
+      await Account.updateOne({ _id: req.params.id }, req.body)
+      req.flash("success", "Cập nhật thành công")
+      res.redirect(`${systemConfig.prefixAdmin}/accounts`)
+   } catch (error) {
+      req.flash("error", "Cập nhật thất bại")
+      res.redirect(`${systemConfig.prefixAdmin}/accounts`)
+   }
+}
