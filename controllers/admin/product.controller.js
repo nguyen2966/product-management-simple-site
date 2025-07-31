@@ -4,6 +4,7 @@ const systemConfig = require("../../config/system")
 
 const Product = require("../../models/products.model")
 const ProductCategory = require("../../models/products-category.model")
+const Account = require("../../models/account.model")
 const filterStatusHelper = require("../../helpers/filterStatus")
 const searchHelper = require("../../helpers/search")
 const paginationHelper = require("../../helpers/pagination")
@@ -48,6 +49,14 @@ module.exports.index= async (req,res)=>{
     .sort(sort) //sắp xếp 
     .limit(objectPagination.limitItems) //số lượng item lấy ra mỗi trang
     .skip(objectPagination.skip)  //vị trí bắt đầu lấy
+   
+   for(const product of products){
+      const user = await Account.findOne({_id: product.createdBy.account_id})
+
+      if(user){
+        product.creatorName = user.fullName
+      }
+   }
 
    res.render("admin/pages/products/index",{
     pageTitle: "Trang san pham",
@@ -155,6 +164,10 @@ module.exports.createPost = async (req,res)=>{
     //   req.body.thumbnail = `/uploads/${req.file.filename}`
     // }
     // Now using online url created at route
+
+    req.body.createdBy = {
+      account_id: res.locals.user.id
+    }
     
     const product = new Product(req.body) // save whole object to database
     await product.save() 

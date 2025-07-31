@@ -4,6 +4,7 @@ const methodOverride = require('method-override')
 const bodyParser = require('body-parser')
 const cookieParser = require("cookie-parser")
 const session = require('express-session')
+const moment = require("moment")
 
 const flash = require('express-flash')
 require('dotenv').config() //Line nay de add cau hình từ .env
@@ -39,8 +40,10 @@ app.set("view engine","pug")
 
 app.use(express.static(`${__dirname}/public`))//nhúng file tĩnh
 //deploy online cần truyền từ thu mục gốc
+
 //App locals variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin
+app.locals.moment = moment
 //this to use in all pug files
 
 

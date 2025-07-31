@@ -22,6 +22,10 @@ const productSchema = new mongoose.Schema(
             slug: "title" ,
             unique: true //san-pham-1
         },
+        createdBy: {
+            account_id: String,
+            createdAt: Date
+        },
         deleted: {
             type: Boolean,
             default: false
