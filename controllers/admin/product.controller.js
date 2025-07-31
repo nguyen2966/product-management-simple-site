@@ -98,7 +98,14 @@ module.exports.changeMulti = async (req,res)=>{
         await Product.updateMany({_id:{$in:ids}},{status:"inactive"})
         break
     case "delete-all":
-        await Product.updateMany({_id:{$in:ids}},{deleted:true})
+        await Product.updateMany({_id:{$in:ids}},
+                                 {deleted:true,
+                                  deletedBy: {
+                                    account_id: res.locals.user.id,
+                                    deletedAt: new Date()
+                                  }
+                                 })
+        break
     case "change-position":
         ids.forEach(async id=>{
             const res = id.split("-")
@@ -109,7 +116,7 @@ module.exports.changeMulti = async (req,res)=>{
   req.flash("success",`Cập nhật thành công ${ids.length} sản phẩm`)
 
   const referer = req.get('referer');
-  if (referer && referer.startsWith('http://localhost:3000/admin/products')) {
+  if (referer) {
     res.redirect(referer);
   } else {
     res.redirect('/admin/products');
@@ -121,13 +128,17 @@ module.exports.deleteItem = async (req,res)=>{
   //await Product.deleteOne({_id:id})
   await Product.updateOne({_id:id},{
     deleted: true,
-    deletedAt: new Date()
+    //deletedAt: new Date()
+    deletedBy: {
+      account_id: res.locals.user.id,
+      deletedAt: new Date()
+    }
   }) //soft delete
 
   req.flash("success","Xóa thành công sản phẩm")
 
   const referer = req.get('referer');
-  if (referer && referer.startsWith('http://localhost:3000/admin/products')) {
+  if (referer) {
     res.redirect(referer);
   } else {
     res.redirect('/admin/products');
