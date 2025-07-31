@@ -6,9 +6,9 @@ html
 
         link(rel="stylesheet",href="/admin/css/style.css")
         script(src="https://cdn.tiny.cloud/1/8a6gjdiu6cjlekcixya69w9cefb33ef1xa00hozn8spo9k1t/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous")
-    body 
+    body
+      if(role.permissions.length > 0)
         include ../partials/header.pug 
-        
         .body
           include ../partials/sider.pug 
          
@@ -20,4 +20,6 @@ html
 
         //-script(src="/tinymce/tinymce.min.js") TinyMCE now require API, which already included above
         script(src="/admin/js/tinyMCEconfig.js")
+      else 
+        h1 Bạn không có quyền truy cập
         

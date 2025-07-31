@@ -2,35 +2,38 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 
-block main 
-  +alert-success(5000)
-  +alert-error(5000)
-  h1(class="mb-4") Chỉnh sửa quyền
-  
-  form(
-    action=`${prefixAdmin}/roles/edit/${record._id}?_method=PATCH`
-    id="form-edit-permission"
-    method="POST"
-  )
-    div(class="form-group")
-      label(for="title") Tiêu đề
-      input(
-        type="text"
-        class="form-control"
-        id="title"
-        name="title"
-        value=record.title
-      )
-    div(class="form-group")
-      label(for="desc") Mô tả ngắn
-      textarea(
-        class="form-control"
-        id="desc"
-        name="description"
-        rows="5"
-      ) #{record.description}
-    div(class="form-group")
-      button(
-        type="submit"
-        class="btn btn-primary"
-      ) Cập nhật
+block main
+  if(role.permissions.includes("permissions_edit"))  
+    +alert-success(5000)
+    +alert-error(5000)
+    h1(class="mb-4") Chỉnh sửa quyền
+    
+    form(
+      action=`${prefixAdmin}/roles/edit/${record._id}?_method=PATCH`
+      id="form-edit-permission"
+      method="POST"
+    )
+      div(class="form-group")
+        label(for="title") Tiêu đề
+        input(
+          type="text"
+          class="form-control"
+          id="title"
+          name="title"
+          value=record.title
+        )
+      div(class="form-group")
+        label(for="desc") Mô tả ngắn
+        textarea(
+          class="form-control"
+          id="desc"
+          name="description"
+          rows="5"
+        ) #{record.description}
+      div(class="form-group")
+        button(
+          type="submit"
+          class="btn btn-primary"
+        ) Cập nhật
+  else 
+    h1(class="mb-4") Bạn không có quyền chỉnh sửa nhóm quyền
