@@ -89,3 +89,47 @@ End header */
     background: red;
     color: white;
 }
+
+/* sub-menu */
+/* Cấp 1 */
+.sub-menu {
+  position: relative;
+  z-index: 999;
+}
+
+.sub-menu > ul {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: white;
+  min-width: 180px;
+  display: none;
+}
+
+.sub-menu:hover > ul {
+  display: block;
+}
+
+/* Cấp 2 trở đi */
+.sub-menu ul li {
+  position: relative;
+}
+
+.sub-menu ul li > ul {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  background: white;
+  min-width: 180px;
+  z-index: 999;
+}
+
+.sub-menu ul li:hover > ul {
+  display: block;
+}
+
+/* End sub-menu */
