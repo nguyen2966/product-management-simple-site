@@ -33,6 +33,25 @@ block main
           option(value="") --Chọn danh mục--
           if(Categories)
             +select-tree(Categories)
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="featured"
+          name="featured"
+          value="1"
+        )
+        label(for="featured" class="form-check-label") Nổi bật
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="featured0"
+          name="featured0"
+          value="0"
+          checked
+        )
+        label(for="featured0" class="form-check-label") Không
       div(class="form-group")
         label(for="desc") Mô tả
         textarea(
@@ -111,7 +130,7 @@ block main
           value="active"
           checked
         )
-        label(form="statusActive" class="form-check-label") Hoạt động
+        label(for="statusActive" class="form-check-label") Hoạt động
       div(class="form-group form-check form-check-inline")
         input(
           type="radio"
@@ -121,7 +140,7 @@ block main
           value="inactive"
           checked
         )
-        label(form="statusActive" class="form-check-label") Dừng hoạt động
+        label(for="statusActive" class="form-check-label") Dừng hoạt động
       div(class="form-group")
         button(
           type="submit"
