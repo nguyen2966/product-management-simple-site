@@ -49,6 +49,7 @@ block main
           th Vị trí
           th Trạng thái
           th Người tạo
+          th Người sửa
           th Hành động
       tbody
         each item,index in products
@@ -96,6 +97,10 @@ block main
               p #{item.creatorName}
               if(item.createdBy)
                 +formatDate(item.createdBy.createdAt)
+            td 
+              p #{item.updaterName}
+              if(item.updatedBy)
+                +formatDate(item.updatedBy.updatedAt)
             td
               a(
                 href=`${prefixAdmin}/products/detail/${item.id}`

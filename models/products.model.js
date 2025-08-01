@@ -6,20 +6,20 @@ mongoose.plugin(slug)
 const productSchema = new mongoose.Schema(
     {
         title: String, // San pham 1
-        product_category_id:{
-            type:String,
-            default:''
+        product_category_id: {
+            type: String,
+            default: ''
         },
         description: String,
         price: Number,
         discountPercentage: Number,
         stock: Number,
         thumbnail: String,
-        status : String,
+        status: String,
         position: Number,
         slug: {
             type: String,
-            slug: "title" ,
+            slug: "title",
             unique: true //san-pham-1
         },
         createdBy: {
@@ -33,13 +33,19 @@ const productSchema = new mongoose.Schema(
         deletedBy: {
             account_id: String,
             deletedAt: Date
-        }
+        },
+        updatedBy: [
+            {
+             account_id: String,
+             updatedAt: Date
+            }
+           ]
     },
     {
-        timeStamps: true
+        timestamps: true
     }
 )
 
-const Product = mongoose.model('Product',productSchema,'products')  
+const Product = mongoose.model('Product', productSchema, 'products')
 
 module.exports = Product

@@ -1,12 +1,16 @@
 header.header 
   .container-fluid 
-    .row.align-items-center.justify-content-between
-      .col-auto
+    .row.align-items-center
+      .col-3
         .inner-logo 
           a(href="/admin/dashboard" class="navbar-brand fw-bold") ADMIN
 
-      .col-auto
+      .col-9.d-flex.justify-content-end.align-items-center.gap-2
         a(
-           href=`${prefixAdmin}/auth/logout`
-           class="btn btn-danger btn-sm"
+          href=`${prefixAdmin}/my-account`
+          class="btn btn-primary btn-sm"
+        ) #{user.fullName}
+        a(
+          href=`${prefixAdmin}/auth/logout`
+          class="btn btn-danger btn-sm"
         ) Đăng xuất

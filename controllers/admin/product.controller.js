@@ -56,6 +56,16 @@ module.exports.index= async (req,res)=>{
       if(user){
         product.creatorName = user.fullName
       }
+
+      //fetch latest updater
+      const updatedBy = product.updatedBy[product.updatedBy.length - 1]
+      if(updatedBy){
+        const updater = await Account.findOne({_id: updatedBy.account_id})
+        if(updater){
+          product.updaterName = updater.fullName
+        }
+      }
+      
    }
 
    res.render("admin/pages/products/index",{
@@ -90,12 +100,21 @@ module.exports.changeStatus = async (req,res)=>{
 module.exports.changeMulti = async (req,res)=>{
   const type = req.body.type
   const ids = req.body.ids.split(",")
+  const updated = {
+      account_id: res.locals.user.id,
+      updatedAt: new Date()
+    };
   switch(type){
     case "active":
-        await Product.updateMany({_id:{$in:ids}},{status:"active"})
+        await Product.updateMany({_id:{$in:ids}},{
+          status:"active",
+          $push: {updatedBy:updated}
+        })
         break
     case "inactive":
-        await Product.updateMany({_id:{$in:ids}},{status:"inactive"})
+        await Product.updateMany({_id:{$in:ids}},{
+          status:"inactive",
+          $push: {updatedBy:updated}})
         break
     case "delete-all":
         await Product.updateMany({_id:{$in:ids}},
@@ -109,7 +128,9 @@ module.exports.changeMulti = async (req,res)=>{
     case "change-position":
         ids.forEach(async id=>{
             const res = id.split("-")
-            await Product.updateOne({_id:res[0]},{position:parseInt(res[1])})
+            await Product.updateOne({_id:res[0]},{
+              position:parseInt(res[1]),
+              $push: {updatedBy:updated}})
         })
     
   }
@@ -188,14 +209,18 @@ module.exports.createPost = async (req,res)=>{
 //[GET] /admin/products/edit/:id
 module.exports.edit = async (req,res)=>{
   try{
+      
       const find = {
        deleted: false,
        _id: req.params.id
       }
       const product = await Product.findOne(find)
+      const record = await ProductCategory.find({deleted:false})
+      const newRecord = createTree(record,"")
       res.render("admin/pages/products/edit_product",{
           pageTitle: "Chỉnh sửa sản phẩm",
-          product:product
+          product:product,
+          Categories: newRecord
         }
       )
   } catch (error){
@@ -206,22 +231,35 @@ module.exports.edit = async (req,res)=>{
 }
 
 //[PATCH] /admin/products/edit/:id
-module.exports.editPatch = async (req,res)=>{
-    for(key in req.body){
-       if(!isNaN(req.body[key]) && req.body[key]){
-        req.body[key]= parseInt(req.body[key])
-       }
-    }
-    
-    try{
-       await Product.updateOne({_id: req.params.id },req.body)
-       req.flash("success","Cập nhật thành công")
-    } catch(error){
-        req.flash("error","Cập nhật sản phẩm thất bại")
-        res.redirect(`${systemConfig.prefixAdmin}/products`)
-    }
-    res.redirect(`${systemConfig.prefixAdmin}/products`)
-}
+module.exports.editPatch = async (req, res) => {
+  try {
+    console.log(req.body);
+
+    const updated = {
+      account_id: res.locals.user.id,
+      updatedAt: new Date()
+    };
+
+    const cleanBody = Object.assign({}, req.body); // hoặc {...req.body}
+
+    await Product.updateOne(
+      { _id: req.params.id },
+      {
+        $set: cleanBody,
+        $push: { updatedBy: updated }
+      }
+    )
+
+    console.log("reach here", result);
+
+    req.flash("success", "Cập nhật thành công");
+    res.redirect(`${systemConfig.prefixAdmin}/products`);
+  } catch (error) {
+    console.error("Update Error:", error);
+    req.flash("error", "Cập nhật sản phẩm thất bại");
+    res.redirect(`${systemConfig.prefixAdmin}/products`);
+  }
+};
 
 
 //[GET] /admin/products/detail/:id
