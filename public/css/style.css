@@ -1,6 +1,9 @@
+/* Global Styles */
 a {
-    text-decoration:none
+    text-decoration: none;
 }
+
+/* Header Styles */
 .header {
     border-bottom: 1px solid rgb(223, 214, 214);
     padding: 10px 0;
@@ -24,20 +27,220 @@ a {
 .inner-menu > ul > li {
     margin-left: 20px;
 }
-/* 
-End header */
 
+/* Enhanced Sub-menu Styles */
+/* Cấp 1 - Main dropdown */
+.sub-menu {
+    position: relative;
+    z-index: 999;
+}
+
+.sub-menu > ul {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: white;
+    min-width: 180px;
+    display: none;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.sub-menu:hover > ul {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Cấp 2 và 3 - All nested submenus */
+.sub-menu ul li {
+    position: relative;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sub-menu ul li:last-child {
+    border-bottom: none;
+}
+
+.sub-menu ul li > a {
+    display: block;
+    padding: 12px 16px;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.sub-menu ul li > a:hover {
+    background-color: #f8f9fa;
+    color: green; /* Match your theme color */
+    padding-left: 20px;
+}
+
+/* Submenu arrows for all levels */
+.sub-menu ul li:has(ul) > a::after {
+    content: "›";
+    float: right;
+    font-weight: bold;
+    color: #999;
+    transition: color 0.2s ease;
+}
+
+.sub-menu ul li:hover:has(ul) > a::after {
+    color: green; /* Match your theme color */
+}
+
+/* Cấp 2 - Second level dropdown */
+.sub-menu ul li > ul {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    background: white;
+    min-width: 180px;
+    z-index: 1000;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.sub-menu ul li:hover > ul {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* Cấp 3 - Third level dropdown */
+.sub-menu ul li ul li > ul {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    background: white;
+    min-width: 160px;
+    z-index: 1001;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.sub-menu ul li ul li:hover > ul {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* Third level styling differences */
+.sub-menu ul li ul li ul li > a {
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #555;
+}
+
+/* Mobile responsive adjustments for 3 levels */
+@media (max-width: 768px) {
+    .inner-menu > ul {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .inner-menu > ul > li {
+        margin-left: 0;
+        margin-bottom: 5px;
+    }
+    
+    .sub-menu > ul {
+        position: static;
+        display: none;
+        box-shadow: none;
+        border: none;
+        background: #f8f9fa;
+        margin-top: 8px;
+        border-radius: 0;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .sub-menu:hover > ul {
+        display: block;
+        transform: none;
+    }
+    
+    /* Second level mobile */
+    .sub-menu ul li > ul {
+        position: static;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        margin-left: 16px;
+        box-shadow: none;
+        border-left: 2px solid green;
+    }
+    
+    /* Third level mobile */
+    .sub-menu ul li ul li > ul {
+        position: static;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        margin-left: 16px;
+        box-shadow: none;
+        border-left: 2px solid #28a745;
+    }
+    
+    .sub-menu ul li:hover > ul,
+    .sub-menu ul li ul li:hover > ul {
+        transform: none;
+    }
+    
+    .sub-menu ul li > a,
+    .sub-menu ul li ul li > a,
+    .sub-menu ul li ul li ul li > a {
+        padding: 10px 16px;
+    }
+}
+
+/* Focus states for accessibility */
+.sub-menu ul li > a:focus {
+    outline: 2px solid green;
+    outline-offset: -2px;
+    background-color: #f8f9fa;
+}
+
+/* End header */
+
+/* Footer Styles */
 .footer {
-     background: #333;
-     color: white;
-     padding: 10px;
-     text-align: center;
-
+    background: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
 }
 
 /* CSS for products.pug */
 .box-head {
-    margin-bottom:30px;
+    margin-bottom: 30px;
 }
 
 .box-head .inner-title {
@@ -47,104 +250,104 @@ End header */
     color: green;
 }
 
-.product-item{
+.product-item {
     border: 1px solid #ddd;
     border-radius: 8px;
     max-width: 200px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+}
+
+.product-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .inner-content {
     margin-top: 0;
     padding-left: 10px;
     padding-bottom: 10px;
+    padding-right: 10px;
 }
 
-.inner-image{
+.inner-image {
     position: relative;
     text-align: center;
     margin-bottom: 0;
+    overflow: hidden;
 }
 
 .inner-image img {
-    
     object-fit: cover;
     width: 100%;
     height: 150px;
     margin-bottom: 0;
+    transition: transform 0.3s ease;
+}
+
+.product-item:hover .inner-image img {
+    transform: scale(1.05);
 }
 
 .inner-featured {
     position: absolute;
-    top:0;
-    right:0;
+    top: 5px;
+    right: 5px;
     background: green;
     color: white;
     padding: 3px 6px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 12px;
     border-radius: 8px;
+    z-index: 2;
 }
 
 .inner-price-new {
-    color:green;
+    color: green;
     font-size: 20px;
     font-weight: 600;
+    margin-bottom: 5px;
 }
 
 .inner-price-old {
     color: red;
-    text-decoration:line-through;
+    text-decoration: line-through;
+    font-size: 14px;
+    margin-bottom: 5px;
 }
 
 .inner-discount {
+    display: inline-block;
     text-align: center;
-    max-width: 30%;
+    padding: 2px 6px;
     border-radius: 10px;
     background: red;
     color: white;
+    font-size: 12px;
+    font-weight: 600;
 }
 
-/* sub-menu */
-/* Cấp 1 */
-.sub-menu {
-  position: relative;
-  z-index: 999;
+/* Product grid layout */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
 }
 
-.sub-menu > ul {
-  position: absolute;
-  right: 0;
-  top: 100%;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  background: white;
-  min-width: 180px;
-  display: none;
+/* Responsive adjustments for products */
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+    
+    .product-item {
+        max-width: 100%;
+    }
+    
+    .box-head .inner-title {
+        font-size: 24px;
+        text-align: center;
+    }
 }
-
-.sub-menu:hover > ul {
-  display: block;
-}
-
-/* Cấp 2 trở đi */
-.sub-menu ul li {
-  position: relative;
-}
-
-.sub-menu ul li > ul {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 100%;
-  background: white;
-  min-width: 180px;
-  z-index: 999;
-}
-
-.sub-menu ul li:hover > ul {
-  display: block;
-}
-
-/* End sub-menu */
-

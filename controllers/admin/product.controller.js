@@ -186,11 +186,10 @@ module.exports.create = async (req, res) => {
 module.exports.createPost = async (req, res) => {
   const permissions = res.locals.role.permissions
   if (permissions.includes("products_create")) {
-    for (key in req.body) {
-      if (!isNaN(req.body[key]) && req.body[key]) {
-        req.body[key] = parseInt(req.body[key])
-      }
-    }
+    req.body.price = Number(req.body.price)
+    req.body.discountPercentage = Number(req.body.discount)
+    delete req.body.discount
+    req.body.stock = Number(req.body.stock)
 
     if (req.body.position == "") {
       const countProducts = await Product.countDocuments()

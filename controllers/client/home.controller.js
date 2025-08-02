@@ -9,10 +9,20 @@ module.exports.index= async (req,res)=>{
         status: "active"
     })
 
-    const newProducts = ProductHelper.pricenewProducts(productsFeatured)
+    NewproductsFeatured = ProductHelper.pricenewProducts(productsFeatured)
+
+    //fetch new products
+    const newProducts = await Product.find({
+        deleted:false,
+        status:"active"
+    }).sort({position:"desc"}).limit(6)
+
+    const displays = ProductHelper.pricenewProducts(newProducts)
+    //end
  
     res.render("client/pages/home/index",{
         pageTitle: "Trang chủ",
-        productsFeatured: newProducts
+        productsFeatured: NewproductsFeatured,
+        newProducts: displays
     })
 }
