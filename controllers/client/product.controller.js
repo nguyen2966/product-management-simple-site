@@ -19,16 +19,29 @@ module.exports.index = async (req,res)=>{
     })
 }
 
-//[GET] /products/:slug
+//[GET] /products//edit/:slug
 module.exports.detail = async (req,res)=>{
     try{
         const find= {
             deleted: false,
-            slug: req.params.slug,
+            slug: req.params.slugProduct,
             status:"active"
+
         }
 
         const product = await Product.findOne(find)
+
+        if(product.product_category_id){
+            const category = await ProductCategory.findOne({
+                _id: product.product_category_id,
+                status: "active",
+                deleted:false
+            })
+            product.category = category
+        }
+
+        ProductHelper.pricenew(product)
+
         res.render("client/pages/products/detail",{
           pageTitle: product.title,
           product: product
@@ -47,7 +60,7 @@ module.exports.category = async (req,res)=>{
     
     const allCategory = await CategoryHelper.getSubCategory(category.id)
 
-    allCategory.forEach((cate)=>{console.log(cate.title)})
+    //allCategory.forEach((cate)=>{console.log(cate.title)})
 
     const allCateId = allCategory.map(cate=>cate.id)
 

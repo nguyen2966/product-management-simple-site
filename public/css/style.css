@@ -351,3 +351,15 @@ a {
         text-align: center;
     }
 }
+
+/* product-detail */
+
+.product-detail .inner-thumb img {
+   
+    width: 70%;
+    height:auto;
+}
+
+.product-detail .inner-thumb {
+    text-align: center;
+}

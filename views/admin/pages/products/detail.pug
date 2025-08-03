@@ -5,33 +5,33 @@ block main
     if (product.title)
       h1.mb-4 #{product.title}
     
-    if (product.price)
+    if (product.price !== undefined)
       div.mb-4 Giá: <b>#{product.price} ₫</b>
     
-    if (product.discountPercentage)
+    if (product.discountPercentage !== undefined)
       div.mb-4 Giảm giá: <b>#{product.discountPercentage}%</b> 
     
-    if (product.stock)
+    if (product.stock !== undefined)
       div.mb-4 Còn lại: <b>#{product.stock}</b>
     
     if (product.thumbnail)
       div.mb-4
         img(src=product.thumbnail class="img-thumbnail" style="width:150px")
+
+    if (product.description)
+      div.mb-4 Mô tả: !{product.description}
     
     if (product.status)
       div.mb-4
-      span Trạng thái:
+        span Trạng thái:
         if product.status === 'active'
           span.badge.bg-success.ms-2 Đang kinh doanh
         else
           span.badge.bg-danger.ms-2 Ngừng kinh doanh
-    if(product.description)
-      div.mb-4 Mô tả: !{product.description}
     a(
-     href=`${prefixAdmin}/products/edit/${product.id}`
+     href=`${prefixAdmin}/products/edit/${product._id}`
      class="btn btn-warning" ) Chỉnh sửa
 
-   
   else 
     h2.text-danger Không tìm thấy sản phẩm!
 
