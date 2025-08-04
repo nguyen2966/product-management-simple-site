@@ -47,12 +47,13 @@ block main
                         href=`/cart/delete/${item.product_id}`
                         class="btn btn-danger"
                        ) Xóa
+            h3(class="mb-3") Tổng đơn hàng: #{cartDetail.totalPrice} đ
+            div(class="text-right mt-3")
+                a(href="/checkout" class="btn btn-success") THANH TOÁN   
           else 
             h3(class="mb-3") Chưa có sản phẩm trong giỏ hàng!
     
-        h3(class="mb-3") Tổng đơn hàng: #{cartDetail.totalPrice} đ
-        div(class="text-right mt-3")
-          a(href="/checkout" class="btn btn-success") THANH TOÁN   
+        
  
    
       

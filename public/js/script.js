@@ -7,3 +7,11 @@ if(Alert){
     },time)
 }
 //End show alert
+
+//Go back button
+const backButton = document.querySelector("[back-button]")
+if(backButton){
+    backButton.addEventListener("click",()=>{
+        history.back()
+    })
+}

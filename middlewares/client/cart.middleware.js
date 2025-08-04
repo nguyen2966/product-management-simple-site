@@ -12,7 +12,7 @@ module.exports.cartId = async (req,res,next)=>{
             expires: new Date(Date.now() + expireTime)
         })
     } else {
-       //console.log("Đã có cartId")
+      // console.log("Đã có cartId")
        const cart = await Cart.findOne({_id: req.cookies.cartId})
        if(cart.products){
           cart.toltalQuantity = cart.products.reduce((tol,item)=>{return tol+item.quantity},0)
