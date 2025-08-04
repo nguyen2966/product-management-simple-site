@@ -13,6 +13,12 @@ module.exports.cartId = async (req,res,next)=>{
         })
     } else {
        //console.log("Đã có cartId")
+       const cart = await Cart.findOne({_id: req.cookies.cartId})
+       if(cart.products){
+          cart.toltalQuantity = cart.products.reduce((tol,item)=>{return tol+item.quantity},0)
+          //console.log(cart.toltalQuantity)
+          res.locals.miniCart = cart
+       }
     }
     next()
 }
