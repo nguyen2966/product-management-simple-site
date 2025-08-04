@@ -1,4 +1,32 @@
 const Cart = require("../../models/cart.model")
+const Product = require("../../models/products.model")
+
+module.exports.index = async (req,res)=>{
+    const cart = await Cart.findOne({
+        _id: req.cookies.cartId
+    })
+    
+    if(cart.products.length>0){
+        for(const item of cart.products){
+            const productId = item.product_id
+
+            const productDetail = await Product.findOne({
+                _id: productId
+            })
+            productDetail.priceNew = (productDetail.price * (100-productDetail.discountPercentage) /100).toFixed(0)
+            item.productInfo = productDetail
+            item.totalPrice = item.quantity*productDetail.priceNew
+        }
+
+        cart.totalPrice = cart.products.reduce((sum,item)=>sum+item.totalPrice,0)
+    }
+
+    res.render("client/pages/cart/index",{
+        pageTitle:"Giỏ hàng",
+        cartDetail:cart
+    })
+}
+
 module.exports.addPost = async (req, res) => {
     const cartId = req.cookies.cartId
     const productId = req.params.productId
