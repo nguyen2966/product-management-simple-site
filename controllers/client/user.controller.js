@@ -150,3 +150,9 @@ module.exports.resetPasswordPost = async (req,res)=>{
     req.flash("success","Đổi mật khẩu thành công")
     res.redirect("/")
 }
+
+module.exports.info = async (req,res) => {
+    res.render("client/pages/user/info",{
+        pageTitle: "Thông tin tài khoản"
+    })
+}
