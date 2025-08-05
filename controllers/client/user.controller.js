@@ -1,6 +1,7 @@
 const User = require("../../models/user.model")
 const ForgotPassword = require("../../models/forgot-password.model")
 const generateHelper = require("../../helpers/generate")
+const sendMailHelper = require("../../helpers/sendMail")
 const md5 = require("md5")
 
 module.exports.register = async (req,res)=>{
@@ -88,6 +89,13 @@ module.exports.forgotPasswordPost = async (req,res)=>{
     const forgotPwd = new ForgotPassword(objectForgotPwd)
     await forgotPwd.save()
     // Send OTP to user email
+    const subject = `Mã OTP xác minh lấy lại mật khẩu`
+    const html = `
+          Mã OTP xác minh lấy lại mật khẩu là <b>${objectForgotPwd.otp}</b>. Thời hạn sử dụng là 
+          3 phút. Lưu ý không được để lộ otp cho bất kì ai.
+         `
+    sendMailHelper.sendMail(email,subject,html)
+    //end sending mail
 
     // redirect to OTP typing page
     res.redirect(`/user/password/otp?email=${email}`)
@@ -123,4 +131,22 @@ module.exports.otpPasswordPost = async(req,res)=>{
     res.cookie("tokenUser",tokenUser) 
 
     res.redirect("/user/password/reset")
+}
+
+module.exports.resetPassword = async (req,res)=>{
+   
+    res.render("client/pages/user/reset-password",{
+        pageTitle: "Đổi mật khẩu"
+    })
+}
+
+module.exports.resetPasswordPost = async (req,res)=>{
+    const password = req.body.password
+    const tokenUser = req.cookies.tokenUser
+    
+    await User.updateOne({tokenUser: tokenUser},
+        {password: md5(password)}
+    )
+    req.flash("success","Đổi mật khẩu thành công")
+    res.redirect("/")
 }
