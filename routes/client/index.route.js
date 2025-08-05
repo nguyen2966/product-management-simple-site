@@ -8,11 +8,13 @@ const cartRoutes = require("./cart.route")
 const checkoutRoutes = require("./checkout.route")
 const userRoutes = require("./user.route")
 const userMiddleware = require("../../middlewares/client/user.middleware")
+const settingMiddleware = require("../../middlewares/client/setting.middleware")
 
 module.exports = (app)=>{
     app.use(categoryMiddleware.category)
     app.use(cartMiddleware.cartId)
     app.use(userMiddleware.infoUser)
+    app.use(settingMiddleware.setting)
     // this route does not specify path so it will run for all request
 
     app.use("/",homeRoutes)

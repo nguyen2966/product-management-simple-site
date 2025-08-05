@@ -9,6 +9,7 @@ const rolesRoutes = require("./roles.route")
 const accountRoutes = require("./account.route.js")
 const authRoutes = require("./auth.route.js")
 const myAccountRoutes = require("./my-account.route.js")
+const settingRoutes = require("./setting.route.js")
 
 module.exports = (app)=>{
     const ADMIN_PATH = systemConfig.prefixAdmin 
@@ -38,4 +39,9 @@ module.exports = (app)=>{
     app.use(ADMIN_PATH+ "/my-account",
         authMiddleware.requireAuth,
         myAccountRoutes)
+
+    app.use(ADMIN_PATH + "/settings",
+        authMiddleware.requireAuth,
+        settingRoutes
+    )
 }
