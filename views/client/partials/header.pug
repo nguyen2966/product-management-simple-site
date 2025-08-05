@@ -2,7 +2,7 @@ include ../mixins/sub-menu.pug
 header.header 
   .container 
     .row.align-items-center 
-      .col-3
+      .col-2
         .inner-logo 
           a(href="#")
             img(src="/images/logo.png", alt="logo")
@@ -23,7 +23,7 @@ header.header
               type="submit"
               class="btn btn-primary"
             ) Tìm
-      .col-4
+      .col-5
         .inner-menu
           ul 
             li 
@@ -35,8 +35,11 @@ header.header
             li 
               a(href="/cart") Giỏ hàng (#{miniCart ? miniCart.toltalQuantity : 0})
             li 
+              a(href="/user/register") Đăng ký
+            li 
               button(
                 class="btn btn-secondary"
                 back-button
               ) Trở lại
+            
               
