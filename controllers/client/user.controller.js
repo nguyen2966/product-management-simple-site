@@ -35,6 +35,25 @@ module.exports.registerPost = async (req,res)=>{
     res.redirect("/")
 }
 
+module.exports.login = async (req,res) =>{
+    res.render("client/pages/user/login",{
+        pageTitle: "Đăng nhập"
+    })
+}
+
+module.exports.loginPost = async (req,res)=>{
+    const user = await User.findOne({
+         email : req.body.email,
+         password: md5(req.body.password),
+         deleted: false
+    })
+    if(!user){
+        req.flash("error","Email hoặc mật khẩu không chính xác")
+        return res.redirect(req.get("referer"))
+    }
+    res.cookie("tokenUser",user.tokenUser)
+    res.redirect("/")
+}
 module.exports.logout = (req,res)=>{
     res.clearCookie("tokenUser")
     res.redirect("/")
