@@ -2,7 +2,7 @@ include ../mixins/sub-menu.pug
 header.header 
   .container 
     .row.align-items-center 
-      .col-2
+      .col-1
         .inner-logo 
           a(href="#")
             img(src="/images/logo.png", alt="logo")
@@ -23,7 +23,7 @@ header.header
               type="submit"
               class="btn btn-primary"
             ) Tìm
-      .col-5
+      .col-6
         .inner-menu
           ul 
             li 
@@ -34,8 +34,14 @@ header.header
               +sub-menu(Categories,pathProduct)
             li 
               a(href="/cart") Giỏ hàng (#{miniCart ? miniCart.toltalQuantity : 0})
-            li 
-              a(href="/user/register") Đăng ký
+            if(user)
+              li 
+                a(href="/user/logout") Đăng xuất
+            else 
+              li 
+                a(href="/user/register") Đăng ký
+              li 
+                a(href="/user/login") Đăng nhập
             li 
               button(
                 class="btn btn-secondary"
