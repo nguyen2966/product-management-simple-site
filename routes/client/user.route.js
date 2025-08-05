@@ -10,5 +10,5 @@ router.post("/register",
     validate.registerPost,
     controller.registerPost)
 
-
+router.get("/logout",controller.logout)
 module.exports = router
