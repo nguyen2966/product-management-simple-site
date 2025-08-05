@@ -1,4 +1,6 @@
 const User = require("../../models/user.model")
+const ForgotPassword = require("../../models/forgot-password.model")
+const generateHelper = require("../../helpers/generate")
 const md5 = require("md5")
 
 module.exports.register = async (req,res)=>{
@@ -57,4 +59,68 @@ module.exports.loginPost = async (req,res)=>{
 module.exports.logout = (req,res)=>{
     res.clearCookie("tokenUser")
     res.redirect("/")
+}
+
+module.exports.forgotPassword = (req,res)=>{
+    res.render("client/pages/user/forgot-password",{
+        pageTitle:"Lấy lại mật khẩu"
+    })
+}
+
+module.exports.forgotPasswordPost = async (req,res)=>{
+    const email = req.body.email
+
+    const user = await User.findOne({
+        email:email,
+        deleted:false
+    })
+    if(!user){
+        req.flash("error","Email không tồn tại!")
+        return res.redirect(req.get("referer"))
+    }
+    // If user with correspond email found, send OTP code
+    const objectForgotPwd = {
+        email: email,
+        otp: "",
+        expireAt: Date.now()
+    }
+    objectForgotPwd.otp = generateHelper.generateRandomNumbers(6)
+    const forgotPwd = new ForgotPassword(objectForgotPwd)
+    await forgotPwd.save()
+    // Send OTP to user email
+
+    // redirect to OTP typing page
+    res.redirect(`/user/password/otp?email=${email}`)
+
+}
+
+module.exports.otpPassword = async(req,res)=>{
+    const email = req.query.email
+
+    res.render("client/pages/user/otp-password",{
+         pageTitle:"Nhập mã OTP",
+         email: email
+    })
+}
+
+module.exports.otpPasswordPost = async(req,res)=>{
+    const email = req.body.email
+    const otp = req.body.otp
+
+    const result = await ForgotPassword.findOne({
+        email: email,
+        otp: otp
+    })
+    
+    if(!result){
+        req.flash("error","OTP không hợp lệ")
+        return res.redirect(req.get("referer"))
+    }
+    
+    //for secuirity purpose, use user token to prevent fake access
+    const tokenUser = await User.findOne(
+        {email:email}).select("tokenUser")
+    res.cookie("tokenUser",tokenUser) 
+
+    res.redirect("/user/password/reset")
 }
