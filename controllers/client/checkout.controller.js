@@ -30,7 +30,7 @@ module.exports.index = async (req,res)=>{
 
 module.exports.order = async (req,res)=>{
     const cartId = req.cookies.cartId
-    console.log(cartId)
+    //console.log(cartId)
     const userInfo = req.body
 
     const cart = await Cart.findOne({_id: cartId})
@@ -61,5 +61,28 @@ module.exports.order = async (req,res)=>{
     await Cart.updateOne({_id:cartId},{
         products: []
     })
-    res.redirect(`checkout/success/${order.id}`)
+    res.redirect(`success/${order.id}`)
+}
+
+module.exports.success = async (req,res)=>{
+    const order = await Order.findOne({
+        _id: req.params.orderId
+    })
+
+    for(const product of order.products){
+        const productInfo = await Product.findOne({_id: product.product_id})
+        .select("title thumbnail")
+
+        product.productInfo = productInfo
+
+        product.priceNew = (product.price * (100-product.discountPercentage) /100).toFixed(0)
+        product.totalPrice = product.priceNew * product.quantity
+        
+    }
+    order.totalPrice = order.products.reduce((sum,item)=>sum+item.totalPrice,0)
+    
+    res.render("client/pages/checkout/success",{
+        pageTitle: "Đặt hàng thành công",
+        orderDetail: order
+    })
 }
