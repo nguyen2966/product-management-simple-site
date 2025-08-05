@@ -54,9 +54,15 @@ module.exports.loginPost = async (req,res)=>{
         req.flash("error","Email hoặc mật khẩu không chính xác")
         return res.redirect(req.get("referer"))
     }
+    //save user_id into cart collection
+    await Cart.updateOne({_id : req.cookies.cartId},{
+        user_id: user.id
+    })
+    //
     res.cookie("tokenUser",user.tokenUser)
     res.redirect("/")
 }
+
 module.exports.logout = (req,res)=>{
     res.clearCookie("tokenUser")
     res.redirect("/")
