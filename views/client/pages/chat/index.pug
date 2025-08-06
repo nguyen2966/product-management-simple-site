@@ -1,0 +1,46 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head
+include ../../mixins/alert.pug
+
+
+block main
+  .container.my-3 
+    .row 
+      .col-12 
+        +box-head(pageTitle)
+    
+    .row 
+      .col-12 
+        .chat 
+          .inner-body 
+            .inner-coming 
+              .inner-name Em yêu 
+              .inner-content 
+                | A ơi sang nhà e, bame đi hết rồi 
+            .inner-outgoing 
+              .inner-name Anh yêu
+              .inner-content 
+                | Ok em iu 
+            .inner-coming 
+              .inner-name Em yêu 
+              .inner-content 
+                | Nhanh nha nhanh nha 
+            .inner-outgoing 
+              .inner-name Anh yêu
+              .inner-content 
+                | Có đến rồi mà thấy khóa cửa
+            .inner-coming 
+              .inner-name Em yêu 
+              .inner-content 
+                | Thì em bảo ko có ai ở nhà mà:)))
+            .inner-foot 
+              form(
+                class="inner-form"
+                action=""
+              )
+                input(
+                  type="text"
+                )
+                button(
+                ) Gửi
+            
