@@ -22,10 +22,8 @@ const port = process.env.PORT
 // Socket io
 const server = http.createServer(app);
 const io = new Server(server)
+global._io = io // create a global var to use anywhere 
 
-io.on('connection',(socket)=>{
-    console.log('a user connected',socket.id)
-})
 // end socket io
 
 app.use(methodOverride("_method"))

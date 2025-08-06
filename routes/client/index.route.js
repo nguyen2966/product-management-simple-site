@@ -1,5 +1,6 @@
 const categoryMiddleware = require("../../middlewares/client/category.middleware")
 const cartMiddleware = require("../../middlewares/client/cart.middleware")
+const authMiddleware = require("../../middlewares/client/auth.middleware")
 
 const productRoutes = require("./product.route")
 const homeRoutes = require("./home.route")
@@ -30,7 +31,7 @@ module.exports = (app)=>{
 
     app.use("/user", userRoutes)
 
-    app.use("/chat",chatRoutes)
+    app.use("/chat",authMiddleware.requireAuth,chatRoutes)
 
     
 }

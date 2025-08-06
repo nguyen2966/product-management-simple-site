@@ -1,4 +1,5 @@
 const User = require("../../models/user.model")
+const Cart = require("../../models/cart.model")
 const ForgotPassword = require("../../models/forgot-password.model")
 const generateHelper = require("../../helpers/generate")
 const sendMailHelper = require("../../helpers/sendMail")
