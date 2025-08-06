@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const cookieParser = require("cookie-parser")
 const session = require('express-session')
 const moment = require("moment")
+const { Server } = require("socket.io")
+const http = require('http');
 
 const flash = require('express-flash')
 require('dotenv').config() //Line nay de add cau hình từ .env
@@ -17,6 +19,14 @@ database.connect()
 
 const app = express()
 const port = process.env.PORT
+// Socket io
+const server = http.createServer(app);
+const io = new Server(server)
+
+io.on('connection',(socket)=>{
+    console.log('a user connected',socket.id)
+})
+// end socket io
 
 app.use(methodOverride("_method"))
 
@@ -51,7 +61,7 @@ admin_route(app)
 route(app)
 
 
-app.listen(port,()=>{
+server.listen(port,()=>{
     console.log("Example app listening on port "+ port)
 })
 
