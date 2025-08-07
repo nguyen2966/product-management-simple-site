@@ -22,7 +22,9 @@ const port = process.env.PORT
 // Socket io
 const server = http.createServer(app);
 const io = new Server(server)
-global._io = io // create a global var to use anywhere 
+
+const chatSocket = require("./config/socket");
+chatSocket(io);
 
 // end socket io
 

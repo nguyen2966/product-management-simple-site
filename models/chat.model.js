@@ -1,6 +1,5 @@
 const mongoose = require("mongoose")
 
-
 const chatSchema = new mongoose.Schema(
     {
         user_id: String,
@@ -8,7 +7,7 @@ const chatSchema = new mongoose.Schema(
         content: String,
         images: Array,
         deleted: {
-            Type: Boolean,
+            type: Boolean,
             default: false
         },
         deletedAt: Date
