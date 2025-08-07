@@ -404,7 +404,7 @@ a {
 }
 
 /* Message containers */
-.inner-coming,
+.inner-incoming,
 .inner-outgoing {
   margin-bottom: 16px;
   display: flex;
@@ -424,11 +424,11 @@ a {
 }
 
 /* Incoming messages (left side) */
-.inner-coming {
+.inner-incoming {
   align-items: flex-start;
 }
 
-.inner-coming .inner-name {
+.inner-incoming .inner-name {
   color: #dc3545;
   font-weight: 600;
   font-size: 12px;
@@ -438,7 +438,7 @@ a {
   margin-left: 12px;
 }
 
-.inner-coming .inner-content {
+.inner-incoming .inner-content {
   background: #ffffff;
   color: #333333;
   padding: 12px 16px;
@@ -451,7 +451,7 @@ a {
   word-wrap: break-word;
 }
 
-.inner-coming .inner-content:before {
+.inner-incoming .inner-content:before {
   content: '';
   position: absolute;
   left: -8px;
@@ -577,7 +577,7 @@ a {
     max-height: 400px;
   }
   
-  .inner-coming .inner-content,
+  .inner-incoming .inner-content,
   .inner-outgoing .inner-content {
     max-width: 85%;
     padding: 10px 14px;
@@ -601,7 +601,7 @@ a {
 }
 
 @media (max-width: 480px) {
-  .inner-coming .inner-content,
+  .inner-incoming .inner-content,
   .inner-outgoing .inner-content {
     max-width: 90%;
     padding: 8px 12px;
@@ -625,7 +625,7 @@ a {
 }
 
 /* Additional hover effects for messages */
-.inner-coming .inner-content:hover,
+.inner-incoming .inner-content:hover,
 .inner-outgoing .inner-content:hover {
   transform: translateY(-1px);
   transition: transform 0.2s ease;

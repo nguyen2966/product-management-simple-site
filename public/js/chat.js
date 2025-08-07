@@ -40,5 +40,14 @@ socket.on("SERVER_RETURN_MESSAGE",(data)=>{
     if (lastChild && lastChild.previousElementSibling) {
        body.insertBefore(div,lastChild);
     }
+
+    body.scrollTop = body.scrollHeight
 })
 //End SERVER_RETURN_MESSAGE
+
+//AUTO SCROLL TO LATEST CHAT
+const body = document.querySelector(".chat .inner-body")
+if(body){
+    body.scrollTop = body.scrollHeight
+}
+//
